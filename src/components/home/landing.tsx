@@ -126,7 +126,7 @@ export function Landing() {
                 ease: [0.16, 1, 0.3, 1],
               }}
               className={cn(
-                'max-w-[900px]',
+                'max-w-225',
                 'text-[clamp(4.5rem,10vw,10rem)]',
                 'font-medium leading-[0.82]',
                 'tracking-[-0.075em] text-foreground',
@@ -153,7 +153,7 @@ export function Landing() {
                 ease: [0.22, 1, 0.36, 1],
               }}
               className={cn(
-                'mt-8 max-w-[360px]',
+                'mt-8 max-w-90',
                 'text-sm leading-7 text-muted-foreground',
                 'md:ml-[28%] md:text-base',
               )}
@@ -172,7 +172,7 @@ export function Landing() {
             className={cn(
               'pointer-events-none absolute z-10',
               'left-[52%] top-[24%]',
-              'w-[85vw] max-w-[900px]',
+              'w-[85vw] max-w-225',
               '-translate-x-1/2',
               'md:left-[72%] md:top-[12%] md:w-[62vw]',
               'lg:w-[58vw]',
@@ -294,7 +294,7 @@ export function Landing() {
             className={cn(
               'mt-8 max-w-4xl',
               'text-5xl font-medium leading-[0.95]',
-              'tracking-[-0.05em] text-foreground',
+              'tracking-tighter text-foreground',
               'md:text-7xl',
             )}
           >
@@ -330,7 +330,7 @@ export function Landing() {
             className={cn(
               'mt-8 max-w-5xl',
               'text-5xl font-medium leading-[0.95]',
-              'tracking-[-0.05em] text-foreground',
+              'tracking-tighter text-foreground',
               'md:text-7xl',
             )}
           >
