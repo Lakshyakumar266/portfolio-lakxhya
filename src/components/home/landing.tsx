@@ -8,6 +8,7 @@ import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { ModeToggle } from '@/components/theme-toogle';
 import { VinylPlayer } from '@/components/vinyl-player';
+import { Footer } from '@/components/footer';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
@@ -250,37 +251,7 @@ export function Landing() {
       {/* ------------------------------------------------------------------ */}
       {/* FOOTER                                                             */}
       {/* ------------------------------------------------------------------ */}
-      <footer className="w-full mt-auto border-t-2 border-dashed border-neutral-300 dark:border-neutral-800">
-        <div className="mx-auto max-w-3xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p className="font-[family-name:var(--font-inter)]">
-            © {new Date().getFullYear()} Lakshya Kumar. All rights reserved.
-          </p>
-          <div className="flex items-center gap-5 font-medium font-[family-name:var(--font-inter)]">
-            <Link
-              href="https://github.com/lakshyakumar266"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-foreground transition-colors"
-            >
-              GitHub
-            </Link>
-            <Link
-              href="https://x.com/lakshyakumar266"
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-foreground transition-colors"
-            >
-              Twitter
-            </Link>
-            <Link
-              href="mailto:hello@lakshyakumar0098@gmail.com"
-              className="hover:text-foreground transition-colors"
-            >
-              Contact
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
