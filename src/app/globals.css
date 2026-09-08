@@ -7,6 +7,7 @@
 :root {
   /* Core palette */
   --primary: oklch(15.906% 0 0);
+  --primary-dark: #0b0b0d;
   --primary-foreground: var(--base-100);
   --secondary: oklch(21.455% 0.001 17.278);
   --secondary-foreground: var(--base-100);
@@ -14,10 +15,10 @@
   --accent-foreground: var(--base-100);
   --neutral: oklch(0% 0 0);
 
-  /* Base */
-  --base-100: oklch(100% 0 0);
-  --base-200: oklch(97% 0 0);
-  --base-300: oklch(94% 0 0);
+  /* Base — glossy warm-pearl whites */
+  --base-100: oklch(99.2% 0.003 240);
+  --base-200: oklch(96.8% 0.006 240);
+  --base-300: oklch(92.5% 0.008 240);
 
   /* Semantic */
   --info: oklch(79.54% 0.103 205.9);
@@ -68,6 +69,7 @@
 .dark {
   /* Core palette */
   --primary: oklch(94% 0 0);
+  --primary-dark: #0b0b0d;
   --primary-foreground: var(--base-100);
   --secondary: oklch(82% 0.001 17.278);
   --secondary-foreground: var(--base-100);
@@ -123,6 +125,7 @@
 @theme inline {
   /* Colors */
   --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -176,9 +179,13 @@
   --color-chart-5: var(--chart-5);
 
   /* Typography */
-  --font-sans: var(--font-inter), Helvetica, sans-serif;
+  --font-sans: var(--font-schibsted), var(--font-inter), Helvetica, sans-serif;
+  --font-inter: var(--font-inter), Helvetica, sans-serif;
+  --font-schibsted: var(--font-schibsted), sans-serif;
+  --font-geist: var(--font-geist), monospace;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-inter), Helvetica, sans-serif;
+  --font-heading:
+    var(--font-schibsted), var(--font-inter), Helvetica, sans-serif;
   /* Radii */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -196,6 +203,17 @@
 html {
   background: var(--background);
   scroll-behavior: auto;
+}
+
+/* Glossy light-mode radial highlight */
+:root html,
+html:not(.dark) {
+  background-image: radial-gradient(
+    ellipse 80% 50% at 50% -10%,
+    oklch(97% 0.012 240 / 0.6) 0%,
+    transparent 70%
+  );
+  background-attachment: fixed;
 }
 
 body {

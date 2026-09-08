@@ -1,399 +1,281 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
+import { ModeToggle } from '@/components/theme-toogle';
+import { VinylPlayer } from '@/components/vinyl-player';
+
+const NAV_LINKS = [
+  { label: 'Home', href: '/' },
+  { label: 'Inspiration', href: '/inspiration' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Sponsor', href: '/sponsor' },
+];
+
+const TRACKS = [
+  {
+    title: 'Self Control',
+    artist: 'Laura Branigan',
+    artwork: '/music/self-control.png',
+    audioSrc: '/music/Laura-Branigan-Self_Control.mp3',
+  },
+  {
+    title: '100 Million',
+    artist: 'Karan Aujla, DIVINE',
+    artwork: '/music/100-million.jpg',
+    audioSrc: '/music/100 Million - Karan Aujla.mp3',
+  },
+  {
+    title: "Admirin' You",
+    artist: 'Karan Aujla, Ikky, Preston Pablo',
+    artwork: '/music/admirin-you.png',
+    audioSrc: '/music/Admirin You - Karan Aujla.mp3',
+  },
+  {
+    title: 'MF Gabhru',
+    artist: 'Karan Aujla • P-POP CULTURE',
+    artwork: '/music/mf-gabhru.jpg',
+    audioSrc: '/music/Mf Gabhru - Karan Aujla.mp3',
+  },
+  {
+    title: 'I Really Do...',
+    artist: 'Karan Aujla, Ikky • P-POP CULTURE',
+    artwork: '/music/p-pop-culture.jpg',
+    audioSrc: '/music/Karan_Aujla_Ikky_-_I_Really_Do..._(mp3.pm).mp3',
+  },
+];
 
 export function Landing() {
-  const { scrollY, scrollYProgress } = useScroll();
+  const pathname = usePathname();
+  const [trackIndex, setTrackIndex] = useState(0);
+  const currentTrack = TRACKS[trackIndex];
 
-  const smoothScrollY = useSpring(scrollY, {
-    stiffness: 80,
-    damping: 25,
-    mass: 0.5,
-  });
-
-  const flowerY = useTransform(smoothScrollY, [0, 900], [0, -140]);
-
-  const flowerScale = useTransform(smoothScrollY, [0, 900], [1, 1.08]);
-
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-
-  const contentY = useTransform(smoothScrollY, [0, 700], [0, -60]);
+  const prevTrack = () => setTrackIndex((i) => Math.max(i - 1, 0));
+  const nextTrack = () =>
+    setTrackIndex((i) => Math.min(i + 1, TRACKS.length - 1));
 
   return (
-    <main className="w-full overflow-x-clip">
-      {/* HERO */}
-      <section className="relative min-h-screen w-full overflow-hidden bg-background">
-        {/* NAV */}
-        <header className="absolute inset-x-0 top-0 z-50 px-6 py-6 md:px-10">
-          <div className="mx-auto flex max-w-[1600px] items-center justify-between">
-            <a
-              href="/"
-              className="text-sm font-medium tracking-tight text-foreground"
-            >
-              LK.
-            </a>
-
-            <nav className="hidden items-center gap-8 md:flex">
-              <a
-                href="#work"
-                className="text-xs uppercase tracking-[0.18em] text-foreground transition-opacity hover:opacity-50"
-              >
-                Work
-              </a>
-
-              <a
-                href="#about"
-                className="text-xs uppercase tracking-[0.18em] text-foreground transition-opacity hover:opacity-50"
-              >
-                About
-              </a>
-
-              <a
-                href="#contact"
-                className="group flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-foreground transition-opacity hover:opacity-50"
-              >
-                Contact
-                <ArrowUpRight
-                  size={13}
-                  className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
-              </a>
-            </nav>
-
-            <a
-              href="#contact"
-              className="flex items-center gap-2 text-sm text-foreground md:hidden"
-            >
-              Contact
-              <ArrowUpRight size={14} />
-            </a>
-          </div>
-        </header>
-
-        {/* HERO CONTENT */}
-        <motion.div
-          style={{
-            y: contentY,
-            opacity: heroOpacity,
-          }}
-          className={cn(
-            'relative z-30 mx-auto flex min-h-screen w-full max-w-[1600px]',
-            'items-center px-6 pb-20 pt-32',
-            'md:px-10 md:pt-20',
-          )}
-        >
-          {/* LEFT CONTENT */}
-          <div className="relative z-40 w-full md:w-[55%]">
-            {/* Label */}
-            <motion.p
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                duration: 0.7,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className={cn(
-                'mb-7 text-[10px] font-medium uppercase',
-                'tracking-[0.28em] text-muted-foreground',
-                'md:text-xs',
-              )}
-            >
-              Software Engineer · Builder
-            </motion.p>
-
-            {/* NAME */}
-            <motion.h1
-              initial={{
-                opacity: 0,
-                y: 70,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                duration: 1,
-                delay: 0.1,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className={cn(
-                'max-w-225',
-                'text-[clamp(4.5rem,10vw,10rem)]',
-                'font-medium leading-[0.82]',
-                'tracking-[-0.075em] text-foreground',
-              )}
-            >
-              Lakshya
-              <br />
-              <span className="text-muted-foreground">Kumar</span>
-            </motion.h1>
-
-            {/* DESCRIPTION */}
-            <motion.p
-              initial={{
-                opacity: 0,
-                y: 30,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                duration: 0.8,
-                delay: 0.35,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className={cn(
-                'mt-8 max-w-90',
-                'text-sm leading-7 text-muted-foreground',
-                'md:ml-[28%] md:text-base',
-              )}
-            >
-              I build software, products, and systems that turn ambitious ideas
-              into real things.
-            </motion.p>
+    <main className="w-full min-h-screen bg-background transition-colors duration-300">
+      {/* ------------------------------------------------------------------ */}
+      {/* NAVBAR                                                              */}
+      {/* ------------------------------------------------------------------ */}
+      <header className="w-full">
+        <div className="relative mx-auto max-w-3xl px-6 pt-10 pb-0">
+          {/* Theme toggle — absolute far right */}
+          <div className="absolute right-6 top-10">
+            <ModeToggle />
           </div>
 
-          {/* FLOWER */}
+          {/* Identity row */}
           <motion.div
-            style={{
-              y: flowerY,
-              scale: flowerScale,
-            }}
-            className={cn(
-              'pointer-events-none absolute z-10',
-              'left-[52%] top-[24%]',
-              'w-[85vw] max-w-225',
-              '-translate-x-1/2',
-              'md:left-[72%] md:top-[12%] md:w-[62vw]',
-              'lg:w-[58vw]',
-            )}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3 mb-5 pr-12"
           >
-            <motion.div
-              initial={{
-                opacity: 0,
-                scale: 0.75,
-                rotate: -10,
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                rotate: 0,
-              }}
-              transition={{
-                duration: 1.4,
-                delay: 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="relative aspect-square w-full"
+            {/* Avatar */}
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-border shadow-sm">
+              <Image
+                src="/avtar-cat.jpg"
+                alt="Lakshya Kumar"
+                fill
+                sizes="478px"
+                className="object-cover"
+                priority
+              />
+            </div>
+
+            {/* Name */}
+            <p
+              className={cn(
+                'text-[1.05rem] leading-none text-foreground',
+                'font-[family-name:var(--font-schibsted)] font-semibold tracking-tight',
+              )}
             >
-              <motion.div
-                animate={{
-                  rotate: 360,
-                }}
-                transition={{
-                  duration: 180,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-                className="relative h-full w-full"
-              >
-                <Image
-                  src="/flower-globe.png"
-                  alt=""
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 85vw, 60vw"
-                  className="object-contain"
-                />
-              </motion.div>
-            </motion.div>
+              Lakshya Kumar{' '}
+              <span className="font-normal text-muted-foreground">
+                aka{' '}
+                <em className="font-[family-name:var(--font-geist)] not-italic font-medium text-foreground">
+                  CodingProGamer
+                </em>
+              </span>
+            </p>
           </motion.div>
 
-          {/* SCROLL */}
-          <motion.a
-            href="#work"
-            initial={{
-              opacity: 0,
-              y: 15,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{
-              delay: 1,
-              duration: 0.7,
-            }}
-            className={cn(
-              'group absolute bottom-7 left-1/2 z-50',
-              'flex -translate-x-1/2 flex-col',
-              'items-center gap-3 text-foreground',
-            )}
+          {/* Nav links */}
+          <motion.nav
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-1"
+            aria-label="Main navigation"
           >
-            <span
-              className={cn(
-                'text-[10px] font-medium uppercase',
-                'tracking-[0.25em]',
-              )}
-            >
-              Scroll
-            </span>
+            {NAV_LINKS.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    'group relative px-2.5 py-1 rounded-md text-sm transition-colors duration-200',
+                    'font-[family-name:var(--font-inter)]',
+                    isActive
+                      ? 'text-foreground font-medium'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  {/* Active: animated dashed underline */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      className="absolute inset-x-2.5 -bottom-0.5 overflow-visible"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 380,
+                        damping: 32,
+                      }}
+                    >
+                      <svg
+                        width="100%"
+                        height="3"
+                        className="overflow-visible block"
+                      >
+                        <line
+                          x1="0"
+                          y1="1.5"
+                          x2="100%"
+                          y2="1.5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeDasharray="3.5 3"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </motion.span>
+                  )}
 
-            <span
-              className={cn(
-                'flex size-10 items-center justify-center',
-                'rounded-full border border-foreground/20',
-                'bg-background/70 backdrop-blur-sm',
-                'transition-all duration-500',
-                'group-hover:bg-foreground',
-                'group-hover:text-background',
-              )}
-            >
-              <ArrowDown
-                size={14}
-                className={cn(
-                  'transition-transform duration-500',
-                  'group-hover:translate-y-1',
-                )}
-              />
-            </span>
-          </motion.a>
-        </motion.div>
-      </section>
+                  {/* Hover: faded dashed underline (non-active only) */}
+                  {!isActive && (
+                    <span className="pointer-events-none absolute inset-x-2.5 -bottom-0.5 overflow-visible opacity-0 transition-opacity duration-200 group-hover:opacity-75 dark:group-hover:opacity-50">
+                      <svg
+                        width="100%"
+                        height="3"
+                        className="overflow-visible block"
+                      >
+                        <line
+                          x1="0"
+                          y1="1.5"
+                          x2="100%"
+                          y2="1.5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeDasharray="3.5 3"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                  )}
 
-      {/* WORK */}
-      <section
-        id="work"
-        className={cn(
-          'min-h-screen border-t border-border',
-          'bg-background px-6 py-32',
-          'md:px-10',
-        )}
-      >
-        <div className="mx-auto max-w-[1600px]">
-          <p
-            className={cn(
-              'text-xs uppercase',
-              'tracking-[0.2em] text-muted-foreground',
-            )}
-          >
-            01 / Selected work
-          </p>
+                  {link.label}
+                </Link>
+              );
+            })}
+          </motion.nav>
 
-          <h2
-            className={cn(
-              'mt-8 max-w-4xl',
-              'text-5xl font-medium leading-[0.95]',
-              'tracking-tighter text-foreground',
-              'md:text-7xl',
-            )}
-          >
-            Things I've built,
-            <br />
-            <span className="text-muted-foreground">
-              and continue to build.
-            </span>
-          </h2>
+          {/* Dashed divider - thicker (2px) and darker in light mode */}
+          <div className="mt-5 border-t-2 border-dashed border-neutral-400 dark:border-neutral-800" />
         </div>
-      </section>
+      </header>
 
-      {/* ABOUT */}
-      <section
-        id="about"
-        className={cn(
-          'min-h-screen border-t border-border',
-          'bg-background px-6 py-32',
-          'md:px-10',
-        )}
-      >
-        <div className="mx-auto max-w-[1600px]">
-          <p
-            className={cn(
-              'text-xs uppercase',
-              'tracking-[0.2em] text-muted-foreground',
-            )}
-          >
-            02 / About
-          </p>
-
-          <h2
-            className={cn(
-              'mt-8 max-w-5xl',
-              'text-5xl font-medium leading-[0.95]',
-              'tracking-tighter text-foreground',
-              'md:text-7xl',
-            )}
-          >
-            Engineer by trade.
-            <br />
-            <span className="text-muted-foreground">Builder by nature.</span>
-          </h2>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section
-        id="contact"
-        className={cn(
-          'min-h-[70vh] border-t border-border',
-          'bg-background px-6 py-10',
-          'md:px-10',
-        )}
-      >
-        <div
-          className={cn(
-            'mx-auto flex min-h-[60vh]',
-            'max-w-[1600px] flex-col justify-end',
-          )}
-        >
-          <p
-            className={cn(
-              'text-xs uppercase',
-              'tracking-[0.2em] text-muted-foreground',
-            )}
-          >
-            03 / Contact
-          </p>
-
-          <a
-            href="mailto:hello@example.com"
-            className={cn(
-              'group mt-8 flex items-end',
-              'justify-between border-b border-border',
-              'pb-4 text-foreground',
-            )}
-          >
-            <span
-              className={cn(
-                'text-[clamp(2.5rem,7vw,7rem)]',
-                'font-medium leading-none',
-                'tracking-[-0.06em]',
-              )}
-            >
-              Let's build.
+      {/* ------------------------------------------------------------------ */}
+      {/* VINYL PLAYER SECTION (Just above footer)                           */}
+      {/* ------------------------------------------------------------------ */}
+      <section className="mx-auto max-w-3xl px-6 pt-14 pb-16">
+        {/* Cool Section Header */}
+        <div className="mb-6 space-y-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300/80 dark:border-neutral-800 bg-neutral-100/80 dark:bg-neutral-900/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
+            Sonic Frequency
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground font-[family-name:var(--font-schibsted)]">
+            On Heavy Rotation
+          </h2>
+          <p className="text-sm text-muted-foreground font-[family-name:var(--font-inter)] max-w-md">
+            The soundscapes and vinyl grooves running while designing, building,
+            and crafting digital art.
+          </p>
+        </div>
 
-            <ArrowUpRight
-              size={32}
-              className={cn(
-                'mb-2 transition-transform duration-500',
-                'group-hover:-translate-y-2',
-                'group-hover:translate-x-2',
-              )}
+        {/* Player Container */}
+        <div className="relative overflow-hidden rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/20 p-6 sm:p-8 backdrop-blur-sm shadow-sm">
+          <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[1.1fr_0.9fr]">
+            <VinylPlayer
+              key={currentTrack.audioSrc}
+              title={currentTrack.title}
+              artist={currentTrack.artist}
+              artwork={currentTrack.artwork}
+              audioSrc={currentTrack.audioSrc}
+              visualPosition="right"
+              visualProps={{
+                height: '360px',
+                coverSize: '185px',
+                vinylSize: '205px',
+                vinylPeekOffset: 35,
+                coverPushOffset: 10,
+              }}
+              controlsProps={{
+                className: 'pr-0 md:pr-4',
+              }}
+              hasPrev={trackIndex > 0}
+              hasNext={trackIndex < TRACKS.length - 1}
+              onPrev={prevTrack}
+              onNext={nextTrack}
             />
-          </a>
+          </div>
         </div>
       </section>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* FOOTER                                                             */}
+      {/* ------------------------------------------------------------------ */}
+      <footer className="w-full mt-auto border-t-2 border-dashed border-neutral-300 dark:border-neutral-800">
+        <div className="mx-auto max-w-3xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+          <p className="font-[family-name:var(--font-inter)]">
+            © {new Date().getFullYear()} Lakshya Kumar. All rights reserved.
+          </p>
+          <div className="flex items-center gap-5 font-medium font-[family-name:var(--font-inter)]">
+            <Link
+              href="https://github.com"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              GitHub
+            </Link>
+            <Link
+              href="https://x.com"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              Twitter
+            </Link>
+            <Link
+              href="mailto:hello@example.com"
+              className="hover:text-foreground transition-colors"
+            >
+              Contact
+            </Link>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

@@ -1,38 +1,87 @@
 'use client';
 
 import * as React from 'react';
-import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { Moon, Sun } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { cn } from '@/lib/utils';
 
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+/**
+ * ThemeToggle — single button, no dropdown.
+ * Clicking cycles: light <-> dark.
+ * Default (system) resolves to the OS preference on first render.
+ * Icon animates out upward and new one drops in from below.
+ */
+export function ModeToggle({
+  className,
+  ...props
+}: React.ComponentProps<'button'>) {
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
 
-export function ModeToggle() {
-  const { setTheme } = useTheme();
+  React.useEffect(() => setMounted(true), []);
+
+  const isDark = resolvedTheme === 'dark';
+
+  const toggle = () => setTheme(isDark ? 'light' : 'dark');
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" size="icon" />}>
-        <Sun className="h-[1.2rem] w-[1.2rem] scale-100 transition-all dark:-rotate-90" />
-        <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all" />
-        <span className="sr-only">Toggle theme</span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={
+        mounted
+          ? isDark
+            ? 'Switch to light mode'
+            : 'Switch to dark mode'
+          : 'Toggle theme'
+      }
+      suppressHydrationWarning
+      className={cn(
+        // Shadcn ghost icon button sizing
+        'inline-flex items-center justify-center rounded-md',
+        'size-9 text-sm font-medium',
+        'border border-input bg-background',
+        'shadow-sm transition-colors duration-150',
+        'hover:bg-accent hover:text-accent-foreground',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'disabled:pointer-events-none disabled:opacity-50',
+        'overflow-hidden relative',
+        className,
+      )}
+      {...props}
+    >
+      {/* AnimatePresence swaps icons with a vertical slide */}
+      <AnimatePresence mode="popLayout" initial={false}>
+        {mounted ? (
+          isDark ? (
+            <motion.span
+              key="moon"
+              initial={{ opacity: 0, y: 8, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.8 }}
+              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              className="flex items-center justify-center"
+            >
+              <Moon className="size-[1.1rem]" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="sun"
+              initial={{ opacity: 0, y: 8, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.8 }}
+              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              className="flex items-center justify-center"
+            >
+              <Sun className="size-[1.1rem]" />
+            </motion.span>
+          )
+        ) : (
+          /* Placeholder while SSR — prevents layout shift */
+          <span className="size-[1.1rem]" />
+        )}
+      </AnimatePresence>
+    </button>
   );
 }
