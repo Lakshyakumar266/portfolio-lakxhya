@@ -93,55 +93,61 @@ export const LinkPreview = ({
       >
         <HoverCardPrimitive.Trigger
           onMouseMove={handleMouseMove}
-          className={cn('text-black dark:text-white', className)}
+          className={cn('text-foreground', className)}
           href={url}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {children}
         </HoverCardPrimitive.Trigger>
 
-        <HoverCardPrimitive.Content
-          className="origin-(--radix-hover-card-content-transform-origin)"
-          side="top"
-          align="center"
-          sideOffset={10}
-        >
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.6 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  transition: {
-                    type: 'spring',
-                    stiffness: 260,
-                    damping: 20,
-                  },
-                }}
-                exit={{ opacity: 0, y: 20, scale: 0.6 }}
-                className="shadow-xl rounded-xl"
-                style={{
-                  x: translateX,
-                }}
-              >
-                <a
-                  href={url}
-                  className="block p-1 bg-white border-2 border-transparent shadow rounded-xl hover:border-neutral-200 dark:hover:border-neutral-800"
-                  style={{ fontSize: 0 }}
+        <HoverCardPrimitive.Portal>
+          <HoverCardPrimitive.Content
+            className="origin-(--radix-hover-card-content-transform-origin) z-50"
+            side="top"
+            align="center"
+            sideOffset={10}
+          >
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.6 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      type: 'spring',
+                      stiffness: 260,
+                      damping: 20,
+                    },
+                  }}
+                  exit={{ opacity: 0, y: 20, scale: 0.6 }}
+                  className="shadow-2xl rounded-xl overflow-hidden"
+                  style={{
+                    x: translateX,
+                  }}
                 >
-                  <Image
-                    src={isStatic ? imageSrc : src}
-                    width={width}
-                    height={height}
-                    className="rounded-lg"
-                    alt="preview image"
-                  />
-                </a>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </HoverCardPrimitive.Content>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl rounded-xl hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors"
+                    style={{ fontSize: 0 }}
+                  >
+                    <Image
+                      src={isStatic ? imageSrc : src}
+                      width={width}
+                      height={height}
+                      className="rounded-lg object-cover"
+                      alt="preview image"
+                    />
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </HoverCardPrimitive.Content>
+        </HoverCardPrimitive.Portal>
       </HoverCardPrimitive.Root>
     </>
   );

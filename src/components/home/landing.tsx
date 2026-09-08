@@ -22,30 +22,35 @@ const TRACKS = [
     artist: 'Laura Branigan',
     artwork: '/music/self-control.png',
     audioSrc: '/music/Laura-Branigan-Self_Control.mp3',
+    spotifyUrl: 'https://open.spotify.com/track/6JNJERZGJwDVgkmbohBw7u',
   },
   {
     title: '100 Million',
     artist: 'Karan Aujla, DIVINE',
     artwork: '/music/100-million.jpg',
     audioSrc: '/music/100 Million - Karan Aujla.mp3',
+    spotifyUrl: 'https://open.spotify.com/track/4d9L3a4gE2t6m195QxP1gD',
   },
   {
     title: "Admirin' You",
     artist: 'Karan Aujla, Ikky, Preston Pablo',
     artwork: '/music/admirin-you.png',
     audioSrc: '/music/Admirin You - Karan Aujla.mp3',
+    spotifyUrl: 'https://open.spotify.com/track/6NJ8Z5GDoHe47R6gGX6sLq',
   },
   {
     title: 'MF Gabhru',
     artist: 'Karan Aujla • P-POP CULTURE',
     artwork: '/music/mf-gabhru.jpg',
     audioSrc: '/music/Mf Gabhru - Karan Aujla.mp3',
+    spotifyUrl: 'https://open.spotify.com/track/1jjmRJyc4A8bzH9PlLQdG3',
   },
   {
     title: 'I Really Do...',
     artist: 'Karan Aujla, Ikky • P-POP CULTURE',
     artwork: '/music/p-pop-culture.jpg',
     audioSrc: '/music/Karan_Aujla_Ikky_-_I_Really_Do..._(mp3.pm).mp3',
+    spotifyUrl: 'https://open.spotify.com/track/2Dp6icDc5dvYnWvxZOjj75',
   },
 ];
 
@@ -186,13 +191,12 @@ export function Landing() {
             })}
           </motion.nav>
 
-          {/* Dashed divider - thicker (2px) and darker in light mode */}
           <div className="mt-5 border-t-2 border-dashed border-neutral-400 dark:border-neutral-800" />
         </div>
       </header>
 
       {/* ------------------------------------------------------------------ */}
-      {/* VINYL PLAYER SECTION (Just above footer)                           */}
+      {/* VINYL PLAYER SECTION                         */}
       {/* ------------------------------------------------------------------ */}
       <section className="mx-auto max-w-3xl px-6 pt-14 pb-16">
         {/* Cool Section Header */}
@@ -214,7 +218,7 @@ export function Landing() {
         </div>
 
         {/* Player Container */}
-        <div className="relative overflow-hidden rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/20 p-6 sm:p-8 backdrop-blur-sm shadow-sm">
+        <div className="relative rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/20 p-6 sm:p-8 backdrop-blur-sm shadow-sm">
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[1.1fr_0.9fr]">
             <VinylPlayer
               key={currentTrack.audioSrc}
@@ -222,6 +226,7 @@ export function Landing() {
               artist={currentTrack.artist}
               artwork={currentTrack.artwork}
               audioSrc={currentTrack.audioSrc}
+              spotifyUrl={currentTrack.spotifyUrl}
               visualPosition="right"
               visualProps={{
                 height: '360px',
@@ -252,7 +257,7 @@ export function Landing() {
           </p>
           <div className="flex items-center gap-5 font-medium font-[family-name:var(--font-inter)]">
             <Link
-              href="https://github.com"
+              href="https://github.com/lakshyakumar266"
               target="_blank"
               rel="noreferrer"
               className="hover:text-foreground transition-colors"
@@ -260,7 +265,7 @@ export function Landing() {
               GitHub
             </Link>
             <Link
-              href="https://x.com"
+              href="https://x.com/lakshyakumar266"
               target="_blank"
               rel="noreferrer"
               className="hover:text-foreground transition-colors"
@@ -268,7 +273,7 @@ export function Landing() {
               Twitter
             </Link>
             <Link
-              href="mailto:hello@example.com"
+              href="mailto:hello@lakshyakumar0098@gmail.com"
               className="hover:text-foreground transition-colors"
             >
               Contact

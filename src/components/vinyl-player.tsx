@@ -18,6 +18,8 @@ export type VinylPlayerProps = {
   artwork: string;
   /** Audio file URL. */
   audioSrc: string;
+  /** Spotify URL for hover preview and external link. */
+  spotifyUrl?: string;
 
   // ----- Layout -----------------------------------------------------------
   /** Placement of the vinyl record visual relative to controls. Default `"left"`. */
@@ -49,6 +51,7 @@ export type VinylPlayerProps = {
     PlayerControlsProps,
     | 'title'
     | 'artist'
+    | 'spotifyUrl'
     | 'isPlaying'
     | 'currentTime'
     | 'duration'
@@ -101,6 +104,7 @@ export function VinylPlayer({
   artist,
   artwork,
   audioSrc,
+  spotifyUrl,
   visualPosition = 'left',
   visualProps,
   controlsProps,
@@ -191,6 +195,7 @@ export function VinylPlayer({
   const sharedControlsProps = {
     title,
     artist,
+    spotifyUrl,
     isPlaying,
     currentTime,
     duration,

@@ -8,30 +8,35 @@ const TRACKS = [
     artist: 'Laura Branigan',
     artwork: '/music/self-control.png',
     audioSrc: '/music/Laura-Branigan-Self_Control.mp3',
+    spotifyUrl: 'https://open.spotify.com/track/6JNJERZGJwDVgkmbohBw7u',
   },
   {
     title: '100 Million',
     artist: 'Karan Aujla, DIVINE',
     artwork: '/music/100-million.jpg',
     audioSrc: '/music/100 Million - Karan Aujla.mp3',
+    spotifyUrl: 'https://open.spotify.com/track/4d9L3a4gE2t6m195QxP1gD',
   },
   {
     title: "Admirin' You",
     artist: 'Karan Aujla, Ikky, Preston Pablo',
     artwork: '/music/admirin-you.png',
     audioSrc: '/music/Admirin You - Karan Aujla.mp3',
+    spotifyUrl: 'https://open.spotify.com/track/6NJ8Z5GDoHe47R6gGX6sLq',
   },
   {
     title: 'MF Gabhru',
     artist: 'Karan Aujla • P-POP CULTURE',
     artwork: '/music/mf-gabhru.jpg',
     audioSrc: '/music/Mf Gabhru - Karan Aujla.mp3',
+    spotifyUrl: 'https://open.spotify.com/track/1jjmRJyc4A8bzH9PlLQdG3',
   },
   {
     title: 'I Really Do...',
     artist: 'Karan Aujla, Ikky • P-POP CULTURE',
     artwork: '/music/p-pop-culture.jpg',
     audioSrc: '/music/Karan_Aujla_Ikky_-_I_Really_Do..._(mp3.pm).mp3',
+    spotifyUrl: 'https://open.spotify.com/track/2Dp6icDc5dvYnWvxZOjj75',
   },
 ];
 
@@ -52,6 +57,7 @@ export default function Page() {
             artist={track.artist}
             artwork={track.artwork}
             audioSrc={track.audioSrc}
+            spotifyUrl={track.spotifyUrl}
             visualProps={{ height: '560px' }}
             controlsProps={{ className: 'pr-2 lg:pr-6' }}
             hasPrev={index > 0}

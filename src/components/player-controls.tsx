@@ -11,6 +11,7 @@ import {
   VolumeX,
 } from 'lucide-react';
 import React from 'react';
+import { LinkPreview } from '@/components/ui/link-preview';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -35,6 +36,8 @@ export type PlayerControlsProps = {
   artist: string;
   /** Small label above the title. Default `"Now Playing"`. */
   nowPlayingLabel?: string;
+  /** Spotify URL for hover preview and external streaming. */
+  spotifyUrl?: string;
 
   // ----- Playback state ---------------------------------------------------
   /** Whether the audio is currently playing. */
@@ -105,6 +108,7 @@ export function PlayerControls({
   title,
   artist,
   nowPlayingLabel = 'Now Playing',
+  spotifyUrl,
   isPlaying,
   currentTime,
   duration,
@@ -144,9 +148,20 @@ export function PlayerControls({
         <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
           {nowPlayingLabel}
         </p>
-        <h3 className="truncate text-xl font-bold tracking-tight text-foreground sm:text-2xl font-[family-name:var(--font-schibsted)]">
-          {title}
-        </h3>
+        {spotifyUrl ? (
+          <div className="inline-block max-w-full">
+            <LinkPreview
+              url={spotifyUrl}
+              className="inline-flex items-center gap-1 truncate text-xl font-bold tracking-tight text-foreground sm:text-2xl font-[family-name:var(--font-schibsted)] underline decoration-dashed decoration-1 underline-offset-4 hover:decoration-solid transition-all"
+            >
+              <span className="truncate">{title}</span>
+            </LinkPreview>
+          </div>
+        ) : (
+          <h3 className="truncate text-xl font-bold tracking-tight text-foreground sm:text-2xl font-[family-name:var(--font-schibsted)]">
+            {title}
+          </h3>
+        )}
         <p className="mt-1 text-sm font-medium text-muted-foreground font-[family-name:var(--font-inter)]">
           {artist}
         </p>
