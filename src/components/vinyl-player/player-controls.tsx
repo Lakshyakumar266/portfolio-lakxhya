@@ -181,7 +181,7 @@ export function PlayerControls({
           type="button"
           onClick={onPrev}
           disabled={!hasPrev}
-          className="rounded-full p-2 sm:p-2.5 text-foreground transition-all hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+          className="flex-1 flex items-center justify-center rounded-xl sm:rounded-full py-2.5 sm:py-2 px-3 text-foreground transition-all hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
           aria-label="Previous track"
         >
           <SkipBack size={18} />
@@ -191,7 +191,7 @@ export function PlayerControls({
         <button
           type="button"
           onClick={() => onSkip(-skipSeconds)}
-          className="hidden sm:inline-flex rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
+          className="shrink-0 hidden sm:inline-flex rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
           aria-label={`Back ${skipSeconds} seconds`}
         >
           <ChevronLeft size={18} />
@@ -205,7 +205,7 @@ export function PlayerControls({
             type="button"
             onClick={onPlayPause}
             className={cn(
-              'flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-foreground text-background shadow-md shadow-neutral-950/10 transition-transform hover:scale-105 active:scale-95 dark:shadow-black/40',
+              'shrink-0 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-foreground text-background shadow-md shadow-neutral-950/10 transition-transform hover:scale-105 active:scale-95 dark:shadow-black/40',
             )}
             aria-label={isPlaying ? 'Pause' : 'Play'}
             style={{ paddingRight: isPlaying ? '0' : '3px' }}
@@ -222,7 +222,7 @@ export function PlayerControls({
         <button
           type="button"
           onClick={() => onSkip(skipSeconds)}
-          className="hidden sm:inline-flex rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
+          className="shrink-0 hidden sm:inline-flex rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
           aria-label={`Forward ${skipSeconds} seconds`}
         >
           <ChevronRight size={18} />
@@ -233,7 +233,7 @@ export function PlayerControls({
           type="button"
           onClick={onNext}
           disabled={!hasNext}
-          className="rounded-full p-2 sm:p-2.5 text-foreground transition-all hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+          className="flex-1 flex items-center justify-center rounded-xl sm:rounded-full py-2.5 sm:py-2 px-3 text-foreground transition-all hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
           aria-label="Next track"
         >
           <SkipForward size={18} />
@@ -243,7 +243,7 @@ export function PlayerControls({
         <button
           type="button"
           onClick={onMuteToggle}
-          className="rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
+          className="hidden sm:inline-flex"
           aria-label={isMuted ? 'Unmute' : 'Mute'}
         >
           {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
