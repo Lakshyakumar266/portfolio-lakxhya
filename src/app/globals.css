@@ -236,3 +236,68 @@ body {
     @apply font-sans;
   }
 }
+
+/* Ambient Alpine Footer Fireflies for Dark Theme */
+.firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: #fef08a;
+  box-shadow: 0 0 10px 3px rgba(253, 224, 71, 0.7);
+  opacity: 0;
+  pointer-events: none;
+}
+.firefly-1 {
+  left: 16%;
+  bottom: 24%;
+  animation: fireflyFloat 6s ease-in-out infinite 0.5s;
+}
+.firefly-2 {
+  left: 26%;
+  bottom: 14%;
+  animation: fireflyFloat 8s ease-in-out infinite 2s;
+}
+.firefly-3 {
+  left: 44%;
+  bottom: 22%;
+  animation: fireflyFloat 7s ease-in-out infinite 1.2s;
+}
+.firefly-4 {
+  left: 63%;
+  bottom: 26%;
+  animation: fireflyFloat 9s ease-in-out infinite 3.2s;
+}
+.firefly-5 {
+  left: 74%;
+  bottom: 16%;
+  animation: fireflyFloat 6.5s ease-in-out infinite 0.8s;
+}
+.firefly-6 {
+  left: 86%;
+  bottom: 20%;
+  animation: fireflyFloat 8.5s ease-in-out infinite 2.5s;
+}
+
+@keyframes fireflyFloat {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
+  }
+  25% {
+    opacity: 0.85;
+    transform: translate(4px, -10px) scale(1.1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: translate(-3px, -20px) scale(0.7);
+  }
+  75% {
+    opacity: 0.9;
+    transform: translate(5px, -30px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -40px) scale(0.5);
+  }
+}
