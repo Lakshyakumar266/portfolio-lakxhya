@@ -8,7 +8,7 @@ import {
   useSpring,
   type MotionValue,
 } from 'motion/react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -21,6 +21,8 @@ export type VinylVisualProps = {
   artworkAlt?: string;
   /** Whether the vinyl record is currently spinning. */
   isPlaying?: boolean;
+  /** Callback to toggle play/pause when tapping vinyl or cover. */
+  onTogglePlay?: () => void;
   /**
    * Rotation speed in degrees-per-millisecond.
    * Default `0.11` ≈ one full revolution every ~9 s.
@@ -65,6 +67,7 @@ export function VinylVisual({
   artwork,
   artworkAlt = 'Album artwork',
   isPlaying = false,
+  onTogglePlay,
   rotationSpeed = 0.11,
   vinylPeekOffset = 50,
   coverPushOffset = 15,
@@ -84,7 +87,7 @@ export function VinylVisual({
     rotation.set(rotation.get() + delta * rotationSpeed);
   });
 
-  // ----- Hover spring animation -----------------------------------------
+  // ----- Hover & Play spring animation ----------------------------------
   const vinylYTarget = useMotionValue(0);
   const coverYTarget = useMotionValue(0);
 
@@ -100,9 +103,22 @@ export function VinylVisual({
     mass: 0.7,
   });
 
+  const isHovered = useRef(false);
   const hoverTimeout = useRef<number | null>(null);
 
+  // Auto-peek when playing or hovered
+  useEffect(() => {
+    if (isPlaying || isHovered.current) {
+      vinylYTarget.set(-vinylPeekOffset);
+      coverYTarget.set(coverPushOffset);
+    } else {
+      vinylYTarget.set(0);
+      coverYTarget.set(0);
+    }
+  }, [isPlaying, vinylPeekOffset, coverPushOffset, vinylYTarget, coverYTarget]);
+
   const handleHoverStart = () => {
+    isHovered.current = true;
     if (hoverTimeout.current !== null) {
       window.clearTimeout(hoverTimeout.current);
     }
@@ -111,35 +127,38 @@ export function VinylVisual({
   };
 
   const handleHoverEnd = () => {
+    isHovered.current = false;
     if (hoverTimeout.current !== null) {
       window.clearTimeout(hoverTimeout.current);
     }
-    // Small delay prevents flicker when cursor moves between vinyl and cover
     hoverTimeout.current = window.setTimeout(() => {
-      vinylYTarget.set(0);
-      coverYTarget.set(0);
+      if (!isPlaying) {
+        vinylYTarget.set(0);
+        coverYTarget.set(0);
+      }
     }, 70);
   };
 
   // ----- Render ---------------------------------------------------------
   return (
     <div
-      className={`relative flex items-center justify-center overflow-hidden ${className}`}
-      style={{ minHeight: height }}
+      className={`relative flex items-center justify-center overflow-visible w-full select-none ${className}`}
+      style={{ height }}
     >
       {/* Ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-[32%] h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-400/[0.08] dark:bg-white/[0.03] blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-[40%] h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-400/[0.08] dark:bg-white/[0.03] blur-3xl" />
 
       {/* ---------------------------------------------------------------- */}
       {/* VINYL — behind the cover                                         */}
       {/* ---------------------------------------------------------------- */}
       <motion.div
-        className="absolute left-1/2 top-[30%] z-10 aspect-square -translate-x-1/2 -translate-y-1/2"
+        className="absolute left-1/2 top-[38%] z-10 aspect-square -translate-x-1/2 -translate-y-1/2 cursor-pointer"
         style={{
           width: vinylSize,
           y: vinylY,
           rotate: rotation,
         }}
+        onClick={onTogglePlay}
         onMouseEnter={handleHoverStart}
         onMouseLeave={handleHoverEnd}
       >
@@ -173,11 +192,12 @@ export function VinylVisual({
       {/* ALBUM COVER — in front of the vinyl                              */}
       {/* ---------------------------------------------------------------- */}
       <motion.div
-        className="absolute left-1/2 top-[50%] z-20 aspect-square -translate-x-1/2 -translate-y-1/2"
+        className="absolute left-1/2 top-[56%] z-20 aspect-square -translate-x-1/2 -translate-y-1/2 cursor-pointer"
         style={{
           width: coverSize,
           y: coverY,
         }}
+        onClick={onTogglePlay}
         onMouseEnter={handleHoverStart}
         onMouseLeave={handleHoverEnd}
       >

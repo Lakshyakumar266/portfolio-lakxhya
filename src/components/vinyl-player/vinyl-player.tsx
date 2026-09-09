@@ -19,7 +19,7 @@ export type VinylPlayerProps = {
   /** Audio file URL. */
   audioSrc: string;
   /** Spotify URL for hover preview and external link. */
-  spotifyUrl?: string;
+  originalUrl?: string;
 
   // ----- Layout -----------------------------------------------------------
   /** Placement of the vinyl record visual relative to controls. Default `"left"`. */
@@ -51,15 +51,13 @@ export type VinylPlayerProps = {
     PlayerControlsProps,
     | 'title'
     | 'artist'
-    | 'spotifyUrl'
+    | 'originalUrl'
     | 'isPlaying'
     | 'currentTime'
     | 'duration'
-    | 'volume'
     | 'isMuted'
     | 'onPlayPause'
     | 'onSeek'
-    | 'onVolumeChange'
     | 'onMuteToggle'
     | 'onSkip'
     | 'onPrev'
@@ -80,11 +78,9 @@ export type VinylPlayerProps = {
       | 'isPlaying'
       | 'currentTime'
       | 'duration'
-      | 'volume'
       | 'isMuted'
       | 'onPlayPause'
       | 'onSeek'
-      | 'onVolumeChange'
       | 'onMuteToggle'
       | 'onSkip'
       | 'onPrev'
@@ -104,7 +100,7 @@ export function VinylPlayer({
   artist,
   artwork,
   audioSrc,
-  spotifyUrl,
+  originalUrl,
   visualPosition = 'left',
   visualProps,
   controlsProps,
@@ -120,7 +116,6 @@ export function VinylPlayer({
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
 
   const handlePlay = () => setIsPlaying(true);
@@ -165,16 +160,6 @@ export function VinylPlayer({
     setCurrentTime(time);
   };
 
-  const handleVolumeChange = (value: number) => {
-    setVolume(value);
-    if (!audioRef.current) return;
-    audioRef.current.volume = value;
-    if (value > 0) {
-      audioRef.current.muted = false;
-      setIsMuted(false);
-    }
-  };
-
   const toggleMute = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -195,15 +180,13 @@ export function VinylPlayer({
   const sharedControlsProps = {
     title,
     artist,
-    spotifyUrl,
+    originalUrl,
     isPlaying,
     currentTime,
     duration,
-    volume,
     isMuted,
     onPlayPause: togglePlay,
     onSeek: handleSeek,
-    onVolumeChange: handleVolumeChange,
     onMuteToggle: toggleMute,
     onSkip: skip,
     onPrev,
@@ -232,6 +215,7 @@ export function VinylPlayer({
           <VinylVisual
             artwork={artwork}
             isPlaying={isPlaying}
+            onTogglePlay={togglePlay}
             {...visualProps}
           />
         );

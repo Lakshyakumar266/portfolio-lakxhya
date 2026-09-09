@@ -5,13 +5,14 @@ import { LinkPreview } from '@/components/ui/link-preview';
 import { GithubIcon } from '@/components/icons/github-icon';
 import { TwitterXIcon } from '@/components/icons/twitter-x-icon';
 import { MailFilledIcon } from '@/components/icons/mail-filled-icon';
+import { ModeToggle } from '@/components/theme-toogle';
 import Link from 'next/link';
 
 export function Footer() {
   return (
     <footer className="w-full mt-auto border-t-2 border-dashed border-neutral-300 dark:border-neutral-800">
       <div className="mx-auto max-w-3xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-        <p className="font-[family-name:var(--font-inter)]">
+        <p className="font-inter">
           © {new Date().getFullYear()} Lakshya Kumar. All rights reserved.
         </p>
 
@@ -26,6 +27,8 @@ export function Footer() {
 
           <LinkPreview
             url="https://x.com/lakshyakumar266"
+            imageSrc="/linkPreviews/XLinkPreview.png"
+            isStatic
             className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-neutral-100 dark:hover:bg-neutral-800/60 transition-colors inline-flex items-center justify-center"
           >
             <TwitterXIcon size={20} />
@@ -37,6 +40,8 @@ export function Footer() {
           >
             <MailFilledIcon size={20} />
           </Link>
+
+          <ModeToggle className="p-2 rounded-lg" iconClassName="size-5" />
         </div>
       </div>
     </footer>
