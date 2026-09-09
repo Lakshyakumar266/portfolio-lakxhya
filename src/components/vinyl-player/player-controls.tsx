@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import React from 'react';
 import { LinkPreview } from '@/components/ui/link-preview';
+import { cn } from '@/lib/utils';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -36,8 +37,8 @@ export type PlayerControlsProps = {
   artist: string;
   /** Small label above the title. Default `"Now Playing"`. */
   nowPlayingLabel?: string;
-  /** Spotify URL for hover preview and external streaming. */
-  spotifyUrl?: string;
+  /** original URL for hover preview and external streaming. */
+  originalUrl?: string;
 
   // ----- Playback state ---------------------------------------------------
   /** Whether the audio is currently playing. */
@@ -46,8 +47,6 @@ export type PlayerControlsProps = {
   currentTime: number;
   /** Total duration in seconds. */
   duration: number;
-  /** Current volume (0–1). */
-  volume: number;
   /** Whether the audio is muted. */
   isMuted: boolean;
 
@@ -57,7 +56,6 @@ export type PlayerControlsProps = {
   /** Called when the seek slider changes. Receives the new time in seconds. */
   onSeek: (time: number) => void;
   /** Called when the volume slider changes. Receives the new volume (0–1). */
-  onVolumeChange: (volume: number) => void;
   /** Called when the mute button is pressed. */
   onMuteToggle: () => void;
   /**
@@ -95,7 +93,6 @@ export type PlayerControlsProps = {
   renderVolume?: (props: {
     volume: number;
     isMuted: boolean;
-    onVolumeChange: (v: number) => void;
     onMuteToggle: () => void;
   }) => React.ReactNode;
 };
@@ -108,15 +105,13 @@ export function PlayerControls({
   title,
   artist,
   nowPlayingLabel = 'Now Playing',
-  spotifyUrl,
+  originalUrl,
   isPlaying,
   currentTime,
   duration,
-  volume,
   isMuted,
   onPlayPause,
   onSeek,
-  onVolumeChange,
   onMuteToggle,
   onSkip,
   onPrev,
@@ -126,16 +121,10 @@ export function PlayerControls({
   hasNext = false,
   className = '',
   renderPlayButton,
-  renderVolume,
 }: PlayerControlsProps) {
   // ----- Seek handler ---------------------------------------------------
   const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onSeek(Number(e.target.value));
-  };
-
-  // ----- Volume handler -------------------------------------------------
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onVolumeChange(Number(e.target.value));
   };
 
   // ----- Render ---------------------------------------------------------
@@ -144,14 +133,14 @@ export function PlayerControls({
       className={`flex flex-col justify-center text-foreground ${className}`}
     >
       {/* Track info */}
-      <div className="mb-6">
-        <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+      <div className="mb-2.5 sm:mb-3">
+        <p className="mb-0.5 text-[11px] font-semibold font-geist uppercase tracking-[0.22em] text-muted-foreground">
           {nowPlayingLabel}
         </p>
-        {spotifyUrl ? (
+        {originalUrl ? (
           <div className="inline-block max-w-full">
             <LinkPreview
-              url={spotifyUrl}
+              url={originalUrl}
               className="inline-flex items-center gap-1 truncate text-xl font-bold tracking-tight text-foreground sm:text-2xl font-[family-name:var(--font-schibsted)] underline decoration-dashed decoration-1 underline-offset-4 hover:decoration-solid transition-all"
             >
               <span className="truncate">{title}</span>
@@ -162,13 +151,13 @@ export function PlayerControls({
             {title}
           </h3>
         )}
-        <p className="mt-1 text-sm font-medium text-muted-foreground font-[family-name:var(--font-inter)]">
+        <p className="mt-0.5 text-sm font-medium text-muted-foreground font-inter">
           {artist}
         </p>
       </div>
 
       {/* Progress */}
-      <div className="mb-6">
+      <div className="mb-2.5 sm:mb-3">
         <input
           type="range"
           min={0}
@@ -179,20 +168,20 @@ export function PlayerControls({
           aria-label="Seek"
           className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-neutral-200 dark:bg-neutral-800 accent-neutral-900 dark:accent-neutral-100 transition-all"
         />
-        <div className="mt-2 flex justify-between text-[11px] tabular-nums text-muted-foreground font-mono">
+        <div className="mt-1 flex justify-between text-[11px] tabular-nums text-muted-foreground font-mono">
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>
       </div>
 
       {/* Controls */}
-      <div className="flex items-center justify-between gap-1">
+      <div className="flex items-center justify-center gap-1.5 sm:gap-3.5 w-full">
         {/* Previous track */}
         <button
           type="button"
           onClick={onPrev}
           disabled={!hasPrev}
-          className="rounded-full p-2.5 text-foreground transition-all hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+          className="rounded-full p-2 sm:p-2.5 text-foreground transition-all hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
           aria-label="Previous track"
         >
           <SkipBack size={18} />
@@ -202,7 +191,7 @@ export function PlayerControls({
         <button
           type="button"
           onClick={() => onSkip(-skipSeconds)}
-          className="rounded-full p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
+          className="rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
           aria-label={`Back ${skipSeconds} seconds`}
         >
           <ChevronLeft size={18} />
@@ -215,8 +204,11 @@ export function PlayerControls({
           <button
             type="button"
             onClick={onPlayPause}
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground text-background shadow-md shadow-neutral-950/10 transition-transform hover:scale-105 active:scale-95 dark:shadow-black/40"
+            className={cn(
+              'flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-foreground text-background shadow-md shadow-neutral-950/10 transition-transform hover:scale-105 active:scale-95 dark:shadow-black/40',
+            )}
             aria-label={isPlaying ? 'Pause' : 'Play'}
+            style={{ paddingRight: isPlaying ? '0' : '3px' }}
           >
             {isPlaying ? (
               <Pause size={19} fill="currentColor" />
@@ -230,7 +222,7 @@ export function PlayerControls({
         <button
           type="button"
           onClick={() => onSkip(skipSeconds)}
-          className="rounded-full p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
+          className="rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
           aria-label={`Forward ${skipSeconds} seconds`}
         >
           <ChevronRight size={18} />
@@ -241,7 +233,7 @@ export function PlayerControls({
           type="button"
           onClick={onNext}
           disabled={!hasNext}
-          className="rounded-full p-2.5 text-foreground transition-all hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+          className="rounded-full p-2 sm:p-2.5 text-foreground transition-all hover:bg-neutral-200/70 dark:hover:bg-neutral-800/80 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
           aria-label="Next track"
         >
           <SkipForward size={18} />
@@ -251,31 +243,12 @@ export function PlayerControls({
         <button
           type="button"
           onClick={onMuteToggle}
-          className="rounded-full p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
+          className="rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
           aria-label={isMuted ? 'Unmute' : 'Mute'}
         >
           {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
         </button>
       </div>
-
-      {/* Volume */}
-      {renderVolume ? (
-        renderVolume({ volume, isMuted, onVolumeChange, onMuteToggle })
-      ) : (
-        <div className="mt-6 flex items-center gap-3">
-          <Volume2 size={14} className="shrink-0 text-muted-foreground" />
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={volume}
-            onChange={handleVolumeChange}
-            aria-label="Volume"
-            className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-neutral-200 dark:bg-neutral-800 accent-neutral-900 dark:accent-neutral-100 transition-all"
-          />
-        </div>
-      )}
     </div>
   );
 }
