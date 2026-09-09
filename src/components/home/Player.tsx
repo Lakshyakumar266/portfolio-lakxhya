@@ -61,7 +61,7 @@ function Player() {
       </div>
       {/* Player Container */}
       <div className="relative rounded-2xl border border-dashed border-neutral-300 dark:border-neutral-800 bg-olive-100 dark:bg-neutral-900/20 px-3.5 py-3 sm:px-6 sm:py-4 backdrop-blur-sm shadow-sm overflow-hidden">
-        <div className="grid grid-cols-1 items-center gap-2 md:gap-6 md:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid grid-cols-1 items-center gap-8 sm:gap-10 md:gap-6 md:grid-cols-[1.1fr_0.9fr]">
           <VinylPlayer
             key={currentTrack.audioSrc}
             title={currentTrack.title}
@@ -71,7 +71,8 @@ function Player() {
             originalUrl={currentTrack.originalUrl}
             visualPosition="right"
             visualProps={{
-              height: 'clamp(200px, 48vw, 240px)',
+              className: 'mt-4 sm:mt-6 md:mt-0',
+              height: 'clamp(220px, 48vw, 250px)',
               coverSize: 'clamp(140px, 35vw, 175px)',
               vinylSize: 'clamp(155px, 39vw, 195px)',
               vinylPeekOffset: 24,
