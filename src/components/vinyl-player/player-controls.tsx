@@ -133,7 +133,7 @@ export function PlayerControls({
       className={`flex flex-col justify-center text-foreground ${className}`}
     >
       {/* Track info */}
-      <div className="mb-2.5 sm:mb-3">
+      <div className="mb-2.5 sm:mb-3 flex flex-col items-center sm:items-start text-center sm:text-left">
         <p className="mb-0.5 text-[11px] font-semibold font-geist uppercase tracking-[0.22em] text-muted-foreground">
           {nowPlayingLabel}
         </p>
@@ -187,11 +187,11 @@ export function PlayerControls({
           <SkipBack size={18} />
         </button>
 
-        {/* Seek back */}
+        {/* Seek back (hidden on mobile) */}
         <button
           type="button"
           onClick={() => onSkip(-skipSeconds)}
-          className="rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
+          className="hidden sm:inline-flex rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
           aria-label={`Back ${skipSeconds} seconds`}
         >
           <ChevronLeft size={18} />
@@ -218,11 +218,11 @@ export function PlayerControls({
           </button>
         )}
 
-        {/* Seek forward */}
+        {/* Seek forward (hidden on mobile) */}
         <button
           type="button"
           onClick={() => onSkip(skipSeconds)}
-          className="rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
+          className="hidden sm:inline-flex rounded-full p-2 sm:p-2.5 text-muted-foreground transition-all hover:bg-neutral-200/70 hover:text-foreground dark:hover:bg-neutral-800/80 active:scale-95"
           aria-label={`Forward ${skipSeconds} seconds`}
         >
           <ChevronRight size={18} />
