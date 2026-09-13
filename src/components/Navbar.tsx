@@ -4,16 +4,39 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import { ChevronDown, FileText, FlaskConical } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu';
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
-  { label: 'Inspiration', href: '/inspiration' },
+  { label: 'Proof of Work', href: '/proof-of-work' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Sponsor', href: '/sponsor' },
+];
+
+const MORE_DROPDOWN_ITEMS = [
+  {
+    label: 'Resume',
+    href: '/resume',
+    icon: FileText,
+  },
+  {
+    label: 'Experimentals',
+    href: '/experimentals',
+    icon: FlaskConical,
+  },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const isMoreActive = MORE_DROPDOWN_ITEMS.some(
+    (item) => pathname === item.href,
+  );
+
   return (
     <>
       <header className="w-full">
@@ -135,6 +158,104 @@ export default function Navbar() {
                   </Link>
                 );
               })}
+
+              {/* More dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  openOnHover
+                  delay={0}
+                  closeDelay={120}
+                  className={cn(
+                    'group relative inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-sm transition-colors duration-150 cursor-pointer outline-none select-none',
+                    'font-inter',
+                    isMoreActive
+                      ? 'text-foreground font-medium'
+                      : 'text-muted-foreground hover:text-foreground data-popup-open:text-foreground',
+                  )}
+                >
+                  {/* Active: animated dashed underline */}
+                  {isMoreActive && (
+                    <motion.span
+                      layoutId="nav-underline"
+                      className="absolute inset-x-2.5 -bottom-0.5 overflow-visible"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 380,
+                        damping: 32,
+                      }}
+                    >
+                      <svg
+                        width="100%"
+                        height="3"
+                        className="overflow-visible block"
+                      >
+                        <line
+                          x1="0"
+                          y1="1.5"
+                          x2="100%"
+                          y2="1.5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeDasharray="3.5 3"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </motion.span>
+                  )}
+
+                  {/* Hover: faded dashed underline (non-active only) */}
+                  {!isMoreActive && (
+                    <span className="pointer-events-none absolute inset-x-2.5 -bottom-0.5 overflow-visible opacity-0 transition-opacity duration-150 group-hover:opacity-75 group-data-[popup-open]:opacity-75 dark:group-hover:opacity-50 dark:group-data-[popup-open]:opacity-50">
+                      <svg
+                        width="100%"
+                        height="3"
+                        className="overflow-visible block"
+                      >
+                        <line
+                          x1="0"
+                          y1="1.5"
+                          x2="100%"
+                          y2="1.5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeDasharray="3.5 3"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                  )}
+
+                  <span>More</span>
+                  <ChevronDown className="size-3.5 transition-transform duration-150 group-data-[popup-open]:rotate-180 opacity-70 group-hover:opacity-100 group-data-[popup-open]:opacity-100" />
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent
+                  align="start"
+                  side="bottom"
+                  sideOffset={4}
+                  className="w-44 p-1 rounded-lg bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 shadow-xl"
+                >
+                  {MORE_DROPDOWN_ITEMS.map((item) => {
+                    const isItemActive = pathname === item.href;
+                    const Icon = item.icon;
+                    return (
+                      <DropdownMenuItem
+                        key={item.href}
+                        render={<Link href={item.href} />}
+                        className={cn(
+                          'flex items-center gap-2.5 py-1.5 px-2.5 rounded-md cursor-pointer select-none',
+                          'text-[13px] font-mono tracking-tight transition-all duration-150',
+                          isItemActive
+                            ? 'bg-neutral-200 text-black dark:bg-white/10 dark:text-white font-medium'
+                            : 'text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-white/5 focus:text-black dark:focus:text-white focus:bg-neutral-200 dark:focus:bg-white/5',
+                        )}
+                      >
+                        <span>{item.label}</span>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             <ModeToggle className="size-8 rounded-md" iconClassName="size-4" />
