@@ -3,6 +3,7 @@ import { Inter, Schibsted_Grotesk, Geist } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/hooks/theme-provider';
 import { SmoothScroll } from '@/components/smooth-scroll';
+import Navbar from '@/components/Navbar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -46,6 +47,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SmoothScroll />
+          <Navbar />
           {children}
         </ThemeProvider>
       </body>
