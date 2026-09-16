@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PlayerControlsProps, VinylPlayer } from '../vinyl-player/vinyl-player';
+import { VinylPlayer } from '../vinyl-player/vinyl-player';
 
 const TRACKS = [
   {

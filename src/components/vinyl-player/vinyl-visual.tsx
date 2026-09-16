@@ -146,7 +146,7 @@ export function VinylVisual({
       style={{ height }}
     >
       {/* Ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-[40%] h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-400/[0.08] dark:bg-white/[0.03] blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-[40%] h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-400/8 dark:bg-white/3 blur-3xl" />
 
       {/* ---------------------------------------------------------------- */}
       {/* VINYL — behind the cover                                         */}
@@ -202,7 +202,7 @@ export function VinylVisual({
         onMouseLeave={handleHoverEnd}
       >
         {/* Gradient border ring */}
-        <div className="absolute -inset-px rounded-[22px] bg-gradient-to-br from-black/15 via-black/5 to-transparent dark:from-white/35 dark:via-white/10 dark:to-transparent" />
+        <div className="absolute -inset-px rounded-[22px] bg-linear-to-br from-black/15 via-black/5 to-transparent dark:from-white/35 dark:via-white/10 dark:to-transparent" />
 
         <div className="relative h-full w-full overflow-hidden rounded-[21px] border border-black/10 dark:border-white/10 bg-neutral-100 dark:bg-[#151517] shadow-[0_15px_35px_rgba(0,0,0,0.12)] dark:shadow-[0_25px_70px_rgba(0,0,0,0.55)]">
           <Image
@@ -215,7 +215,7 @@ export function VinylVisual({
             draggable={false}
           />
           {/* Shine overlay */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/20" />
+          <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-white/15 via-transparent to-black/20" />
         </div>
       </motion.div>
     </div>

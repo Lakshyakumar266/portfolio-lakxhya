@@ -91,6 +91,35 @@ export type VinylPlayerProps = {
   ) => React.ReactNode;
 };
 
+type VinylPlayerControlsProps = Pick<
+  PlayerControlsProps,
+  | 'title'
+  | 'artist'
+  | 'originalUrl'
+  | 'isPlaying'
+  | 'currentTime'
+  | 'duration'
+  | 'isMuted'
+  | 'onPlayPause'
+  | 'onSeek'
+  | 'onMuteToggle'
+  | 'onSkip'
+  | 'onPrev'
+  | 'onNext'
+  | 'hasPrev'
+  | 'hasNext'
+>;
+
+function VinylPlayerControlsRenderer({
+  renderControls,
+  controlsProps,
+}: {
+  renderControls: NonNullable<VinylPlayerProps['renderControls']>;
+  controlsProps: VinylPlayerControlsProps;
+}) {
+  return <>{renderControls(controlsProps)}</>;
+}
+
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -221,7 +250,10 @@ export function VinylPlayer({
         );
 
         const controlsNode = renderControls ? (
-          renderControls(sharedControlsProps)
+          <VinylPlayerControlsRenderer
+            renderControls={renderControls}
+            controlsProps={sharedControlsProps}
+          />
         ) : (
           <PlayerControls {...sharedControlsProps} {...controlsProps} />
         );

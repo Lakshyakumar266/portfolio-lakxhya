@@ -141,13 +141,13 @@ export function PlayerControls({
           <div className="inline-block max-w-full">
             <LinkPreview
               url={originalUrl}
-              className="inline-flex items-center gap-1 truncate text-xl font-bold tracking-tight text-foreground sm:text-2xl font-[family-name:var(--font-schibsted)] underline decoration-dashed decoration-1 underline-offset-4 hover:decoration-solid transition-all"
+              className="inline-flex items-center gap-1 truncate text-xl font-bold tracking-tight text-foreground sm:text-2xl font-schibsted underline decoration-dashed decoration-1 underline-offset-4 hover:decoration-solid transition-all"
             >
               <span className="truncate">{title}</span>
             </LinkPreview>
           </div>
         ) : (
-          <h3 className="truncate text-xl font-bold tracking-tight text-foreground sm:text-2xl font-[family-name:var(--font-schibsted)]">
+          <h3 className="truncate text-xl font-bold tracking-tight text-foreground sm:text-2xl font-schibsted">
             {title}
           </h3>
         )}
