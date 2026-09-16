@@ -86,10 +86,10 @@ export default function Navbar() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-wrap items-center justify-between gap-3"
+            className="flex flex-nowrap items-center justify-between gap-1 sm:gap-3"
             aria-label="Main navigation"
           >
-            <div className="flex min-w-0 flex-wrap items-center gap-1">
+            <div className="flex min-w-0 flex-nowrap items-center gap-0 sm:gap-1">
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -97,7 +97,7 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      'group relative px-2.5 py-1 rounded-md text-sm transition-colors duration-200',
+                      'group relative shrink-0 rounded-md px-1.5 py-1 text-xs transition-colors duration-200 sm:px-2.5 sm:text-sm',
                       'font-inter',
                       isActive
                         ? 'text-foreground font-medium'
@@ -168,7 +168,7 @@ export default function Navbar() {
                   delay={0}
                   closeDelay={120}
                   className={cn(
-                    'group relative inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-sm transition-colors duration-150 cursor-pointer outline-none select-none',
+                    'group relative inline-flex shrink-0 cursor-pointer items-center gap-0.5 rounded-md px-1.5 py-1 text-xs transition-colors duration-150 outline-none select-none sm:gap-1 sm:px-2.5 sm:text-sm',
                     'font-inter',
                     isMoreActive
                       ? 'text-foreground font-medium'
@@ -261,7 +261,10 @@ export default function Navbar() {
               </DropdownMenu>
             </div>
 
-            <ModeToggle className="size-8 rounded-md" iconClassName="size-4" />
+            <ModeToggle
+              className="size-7 shrink-0 rounded-md sm:size-8"
+              iconClassName="size-3.5 sm:size-4"
+            />
           </motion.nav>
 
           <div className="mt-4 border-t-2 border-dashed border-neutral-400 dark:border-neutral-800 sm:mt-5" />
