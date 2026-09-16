@@ -56,7 +56,7 @@ function Player() {
         </h2>
         <p className="text-sm text-muted-foreground font-inter max-w-md">
           The soundscapes and grooves running while brainstorming, building, and
-          crafting stuff's.
+          crafting stuff&apos;s.
         </p>
       </div>
       {/* Player Container */}
