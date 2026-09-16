@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/avtar-cat.jpg',
+        url: 'https://ik.imagekit.io/lksimgshub/portfolio_lakxhya.in/cat-in-car.jpg',
         width: 1200,
         height: 630,
         alt: 'Lakshya Kumar',
@@ -82,7 +82,9 @@ export const metadata: Metadata = {
     title: 'Lakshya Kumar | Developer, Builder, and Founder',
     description:
       "Explore Lakshya Kumar's work, experiments, writing, and professional background.",
-    images: ['/avtar-cat.jpg'],
+    images: [
+      'https://ik.imagekit.io/lksimgshub/portfolio_lakxhya.in/cat-in-car.jpg',
+    ],
   },
 };
 
