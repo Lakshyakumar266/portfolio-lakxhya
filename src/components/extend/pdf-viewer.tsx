@@ -1253,7 +1253,7 @@ function PDFViewerScrollArea({
       data-slot="pdf-viewer-scroll-area"
       className={cn('size-full min-h-0', className)}
     >
-      <ScrollArea className="size-full min-h-0">
+      <ScrollArea className="size-full min-h-0 **:data-[slot=scroll-area-viewport]:overflow-x-auto">
         <div
           {...resolvedViewportProps}
           data-slot="pdf-viewer-scroll-content"

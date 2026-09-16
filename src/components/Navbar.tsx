@@ -42,13 +42,13 @@ export default function Navbar() {
   return (
     <>
       <header className="w-full">
-        <div className="relative mx-auto max-w-3xl px-6 pt-10 pb-0">
+        <div className="relative mx-auto max-w-3xl px-3 pt-6 pb-0 sm:px-6 sm:pt-10">
           {/* Identity row */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-3 mb-5"
+            className="mb-5 flex items-center gap-2 sm:gap-3"
           >
             {/* Avatar */}
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-border shadow-sm">
@@ -65,16 +65,16 @@ export default function Navbar() {
             {/* Name */}
             <p
               className={cn(
-                'leading-none text-foreground',
+                'min-w-0 leading-none text-foreground',
                 'font-schibsted font-semibold tracking-tight',
               )}
             >
-              <span className="text-xl">Lakshya Kumar </span>
-              <span className="font-normal text-md">
+              <span className="text-lg sm:text-xl">Lakshya Kumar </span>
+              <span className="text-sm font-normal sm:text-md">
                 <span className="font-schibsted font-semibold text-muted-foreground">
                   aka{' '}
                 </span>
-                <em className="font-geist not-italic font-medium text-foreground text-xl">
+                <em className="font-geist text-lg font-medium not-italic text-foreground sm:text-xl">
                   Lakxhya
                 </em>
               </span>
@@ -86,10 +86,10 @@ export default function Navbar() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center justify-between"
+            className="flex flex-wrap items-center justify-between gap-3"
             aria-label="Main navigation"
           >
-            <div className="flex items-center gap-1">
+            <div className="flex min-w-0 flex-wrap items-center gap-1">
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -207,7 +207,7 @@ export default function Navbar() {
 
                   {/* Hover: faded dashed underline (non-active only) */}
                   {!isMoreActive && (
-                    <span className="pointer-events-none absolute inset-x-2.5 -bottom-0.5 overflow-visible opacity-0 transition-opacity duration-150 group-hover:opacity-75 group-data-[popup-open]:opacity-75 dark:group-hover:opacity-50 dark:group-data-[popup-open]:opacity-50">
+                    <span className="pointer-events-none absolute inset-x-2.5 -bottom-0.5 overflow-visible opacity-0 transition-opacity duration-150 group-hover:opacity-75 group-data-popup-open:opacity-75 dark:group-hover:opacity-50 dark:group-data-popup-open:opacity-50">
                       <svg
                         width="100%"
                         height="3"
@@ -228,7 +228,7 @@ export default function Navbar() {
                   )}
 
                   <span>More</span>
-                  <ChevronDown className="size-3.5 transition-transform duration-150 group-data-[popup-open]:rotate-180 opacity-70 group-hover:opacity-100 group-data-[popup-open]:opacity-100" />
+                  <ChevronDown className="size-3.5 opacity-70 transition-transform duration-150 group-data-popup-open:rotate-180 group-hover:opacity-100 group-data-popup-open:opacity-100" />
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent
@@ -252,6 +252,7 @@ export default function Navbar() {
                             : 'text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-neutral-200 dark:hover:bg-white/5 focus:text-black dark:focus:text-white focus:bg-neutral-200 dark:focus:bg-white/5',
                         )}
                       >
+                        <Icon className="size-4 shrink-0" />
                         <span>{item.label}</span>
                       </DropdownMenuItem>
                     );
@@ -263,7 +264,7 @@ export default function Navbar() {
             <ModeToggle className="size-8 rounded-md" iconClassName="size-4" />
           </motion.nav>
 
-          <div className="mt-5 border-t-2 border-dashed border-neutral-400 dark:border-neutral-800" />
+          <div className="mt-4 border-t-2 border-dashed border-neutral-400 dark:border-neutral-800 sm:mt-5" />
         </div>
       </header>
     </>
