@@ -88,6 +88,9 @@ export const metadata: Metadata = {
   },
 };
 
+const socialLogo =
+  'https://ik.imagekit.io/lksimgshub/portfolio_lakxhya.in/cat-in-car.jpg';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -99,6 +102,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${schibsted.variable} ${geist.variable} h-full antialiased`}
     >
+      <head>
+        <meta property="og:logo" content={socialLogo} />
+      </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
