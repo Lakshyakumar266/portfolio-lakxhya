@@ -14,7 +14,7 @@ function PanelBorder({ side }: { side: 'left' | 'right' }) {
     <ResizableHandle
       aria-label={`Resize ${side} panel`}
       className={cn(
-        'pointer-events-auto z-40 w-px bg-border before:absolute before:inset-y-2 before:w-px before:bg-primary/50 before:[mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent)] before:opacity-0 before:transition-opacity before:duration-200 before:ease-in-out hover:before:opacity-100 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:before:opacity-100 data-[separator=active]:before:opacity-100 data-[separator=hover]:before:opacity-100 motion-reduce:before:transition-none',
+        'pointer-events-auto z-40 w-px bg-border before:absolute before:inset-y-2 before:w-px before:bg-primary/50 before:mask-[linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent)] before:opacity-0 before:transition-opacity before:duration-200 before:ease-in-out hover:before:opacity-100 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:before:opacity-100 data-[separator=active]:before:opacity-100 data-[separator=hover]:before:opacity-100 motion-reduce:before:transition-none',
         side === 'left' ? 'before:-left-px' : 'before:left-full',
       )}
     />

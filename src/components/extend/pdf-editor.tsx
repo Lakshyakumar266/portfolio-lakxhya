@@ -1305,7 +1305,7 @@ function PdfEditorPageControl({
           }}
           className={cn(
             'h-8 px-2.5',
-            'mx-1 w-14 min-w-14 rounded-md [&_[data-slot=input]]:text-center',
+            'mx-1 w-14 min-w-14 rounded-md **:data-[slot=input]:text-center',
           )}
         />
       ) : (
@@ -1364,7 +1364,7 @@ function PdfEditorZoomControl({
       >
         <SelectTrigger
           size="sm"
-          className="w-[104px] min-w-[104px]"
+          className="w-26 min-w-26"
           aria-label="Zoom level"
         >
           <SelectValue placeholder="Zoom">
@@ -1536,7 +1536,7 @@ function PdfEditorSearchControl({
       </PdfEditorTooltip>
       <PopoverContent
         align="end"
-        className="w-72 p-0 [&>[data-slot=popover-viewport]]:p-3.5!"
+        className="w-72 p-0 *:data-[slot=popover-viewport]:p-3.5!"
       >
         <div className="space-y-3">
           <Input
@@ -2775,11 +2775,7 @@ function PdfEditorInner({
             spread?.setSpreadMode(String(value) as SpreadMode)
           }
         >
-          <SelectTrigger
-            size="sm"
-            className="w-[132px]"
-            aria-label="Page layout"
-          >
+          <SelectTrigger size="sm" className="w-33" aria-label="Page layout">
             <BookOpenGlyph className="size-4 text-muted-foreground" />
             <SelectValue placeholder="Layout" />
           </SelectTrigger>
@@ -2807,7 +2803,7 @@ function PdfEditorInner({
         >
           <SelectTrigger
             size="sm"
-            className="w-[128px]"
+            className="w-32"
             aria-label="Scroll direction"
           >
             <SelectValue placeholder="Scroll" />
@@ -4129,7 +4125,7 @@ function InlineScrollArea2({
         className={cn(
           'size-full min-h-0',
           orientation === 'horizontal' &&
-            '[&>[data-orientation=vertical]]:hidden',
+            '*:data-[orientation=vertical]:hidden',
           className,
         )}
       >
