@@ -3,12 +3,19 @@
 import * as React from 'react';
 import { createPluginRegistration, refreshPages } from '@embedpdf/core';
 import { EmbedPDF, useRegistry } from '@embedpdf/core/react';
+import { PdfAnnotationSubtype, PdfActionType } from '@embedpdf/models';
 import type {
+  PdfAnnotationObject,
   PdfDocumentObject,
   PdfEngine,
   Rect,
   Rotation,
 } from '@embedpdf/models';
+import {
+  AnnotationLayer,
+  AnnotationPluginPackage,
+  type CustomAnnotationRendererProps,
+} from '@embedpdf/plugin-annotation/react';
 import {
   DocumentManagerPluginPackage,
   useActiveDocument,
@@ -152,6 +159,7 @@ export type PDFViewerProps = {
   fileName?: string;
   resolveScrollAreaViewport?: PDFViewerScrollAreaViewportResolver;
   showDownload?: boolean;
+  showSearchControls?: boolean;
   showToolbar?: boolean;
   showRotateControls?: boolean;
   showUpload?: boolean;
@@ -220,6 +228,25 @@ function resolveDefaultScrollAreaViewport(container: HTMLDivElement) {
   return container.querySelector<HTMLDivElement>(
     DEFAULT_SCROLL_AREA_VIEWPORT_SELECTOR,
   );
+}
+function renderPdfAnnotation({
+  annotation,
+  children,
+}: CustomAnnotationRendererProps<PdfAnnotationObject>) {
+  if (annotation.type !== PdfAnnotationSubtype.LINK) return children;
+  const target = annotation.target;
+  const uri =
+    target?.type === 'action' && target.action.type === PdfActionType.URI
+      ? target.action.uri
+      : null;
+  if (!uri) return children;
+  return React.cloneElement(children, {
+    onClick: (event: React.MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      window.open(uri, '_blank', 'noopener,noreferrer');
+    },
+  });
 }
 const PDFViewerScrollAreaResolverContext =
   React.createContext<PDFViewerScrollAreaViewportResolver>(
@@ -478,6 +505,7 @@ function PDFViewerFallbackShell({
   state,
   toolbarActions,
   onUploadFile,
+  showSearchControls,
 }: {
   className?: string;
   defaultZoom: PDFViewerZoomLevel;
@@ -490,6 +518,7 @@ function PDFViewerFallbackShell({
   state: 'loading' | 'error' | 'empty';
   toolbarActions?: React.ReactNode;
   onUploadFile?: (file: File) => void;
+  showSearchControls?: boolean;
 }) {
   return (
     <div
@@ -509,17 +538,19 @@ function PDFViewerFallbackShell({
           zoomLevel={toZoomLevel(defaultZoom)}
           numPages={0}
           searchControl={
-            <ToolbarTooltip label="Search text">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Search text"
-                disabled
-              >
-                <Search className="size-4" />
-              </Button>
-            </ToolbarTooltip>
+            showSearchControls === false ? null : (
+              <ToolbarTooltip label="Search text">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Search text"
+                  disabled
+                >
+                  <Search className="size-4" />
+                </Button>
+              </ToolbarTooltip>
+            )
           }
           sidebarOpen={sidebarOpen}
           showDownload={showDownload}
@@ -698,7 +729,7 @@ function PDFViewerPageNumberControl({
           }}
           className={cn(
             'h-8 px-2.5',
-            'mx-1 w-14 min-w-14 rounded-md [&_[data-slot=input]]:text-center',
+            'mx-1 w-14 min-w-14 rounded-md **:data-[slot=input]:text-center',
           )}
         />
       ) : (
@@ -992,8 +1023,8 @@ function PDFViewerToolbar({
         (left, right) => left - right,
       );
   return (
-    <div className="flex min-h-12 flex-wrap items-center justify-between gap-2 border-b bg-background px-3 py-2">
-      <div className="flex min-w-0 flex-wrap items-center gap-2">
+    <div className="flex min-h-12 flex-wrap items-center justify-between gap-1.5 border-b bg-background px-2 py-1.5 sm:gap-2 sm:px-3 sm:py-2">
+      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1 sm:gap-2">
         <TooltipProvider>
           <ToolbarTooltip label="Pages sidebar">
             <Button
@@ -1022,7 +1053,7 @@ function PDFViewerToolbar({
         />
       </div>
       <TooltipProvider>
-        <div className="flex min-w-0 flex-wrap items-center justify-end gap-1">
+        <div className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-0.5 sm:gap-1">
           {showRotateControls ? (
             <>
               <div className="flex flex-none items-center gap-1">
@@ -1088,7 +1119,7 @@ function PDFViewerToolbar({
             >
               <SelectTrigger
                 size="sm"
-                className="w-[104px] min-w-[104px]"
+                className="w-20 min-w-20 sm:w-26 sm:min-w-26"
                 aria-label="Zoom level"
               >
                 <SelectValue placeholder="Zoom">
@@ -1131,8 +1162,15 @@ function PDFViewerToolbar({
               </Button>
             </ToolbarTooltip>
           </div>
-          <Separator orientation="vertical" className="mx-1 h-4 self-center" />
-          {searchControl}
+          {searchControl ? (
+            <>
+              <Separator
+                orientation="vertical"
+                className="mx-1 h-4 self-center"
+              />
+              {searchControl}
+            </>
+          ) : null}
           {toolbarActions ? (
             <>
               <Separator
@@ -1984,6 +2022,7 @@ type PDFViewerInnerProps = {
   renderPageOverlay?: (props: PDFViewerPageOverlayProps) => React.ReactNode;
   onActivePageChange?: (pageNumber: number) => void;
   onPdfUpload?: (file: File) => void;
+  showSearchControls: boolean;
   onPagePointerDown?: PDFViewerProps['onPagePointerDown'];
   onPagePointerMove?: PDFViewerProps['onPagePointerMove'];
   onPagePointerUp?: PDFViewerProps['onPagePointerUp'];
@@ -2007,6 +2046,7 @@ function PDFViewerInner({
   renderPageOverlay,
   onActivePageChange,
   onPdfUpload,
+  showSearchControls,
   onPagePointerDown,
   onPagePointerMove,
   onPagePointerUp,
@@ -2350,6 +2390,12 @@ function PDFViewerInner({
               highlightColor="rgba(253, 224, 71, 0.45)"
               activeHighlightColor="rgba(249, 115, 22, 0.55)"
             />
+            <AnnotationLayer
+              documentId={documentId}
+              pageIndex={page.pageIndex}
+              customAnnotationRenderer={renderPdfAnnotation}
+              selectionMenu={undefined}
+            />
             <PDFViewerTextSelectionLayer
               documentId={documentId}
               pageIndex={page.pageIndex}
@@ -2397,11 +2443,13 @@ function PDFViewerInner({
           isPreparingDownload={isPreparingDownload}
           numPages={numPages}
           searchControl={
-            <PDFViewerSearchControl
-              key={documentId}
-              documentId={documentId}
-              controlsDisabled={controlsDisabled}
-            />
+            showSearchControls ? (
+              <PDFViewerSearchControl
+                key={documentId}
+                documentId={documentId}
+                controlsDisabled={controlsDisabled}
+              />
+            ) : null
           }
           sidebarOpen={sidebarOpen}
           showDownload={showDownload}
@@ -2522,6 +2570,7 @@ function PDFViewerDocumentLoader({
         className={innerProps.className}
         defaultZoom={innerProps.defaultZoom}
         showDownload={innerProps.showDownload}
+        showSearchControls={innerProps.showSearchControls}
         showRotateControls={innerProps.showRotateControls}
         showToolbar={innerProps.showToolbar}
         showUpload={innerProps.showUpload}
@@ -2553,6 +2602,7 @@ export const PDFViewer = React.forwardRef<PDFViewerHandle, PDFViewerProps>(
       fileName,
       resolveScrollAreaViewport,
       showDownload = true,
+      showSearchControls = true,
       showRotateControls = true,
       showToolbar = true,
       showUpload = true,
@@ -2608,6 +2658,10 @@ export const PDFViewer = React.forwardRef<PDFViewerHandle, PDFViewerProps>(
         extraRings: 0,
       }),
       createPluginRegistration(InteractionManagerPluginPackage),
+      createPluginRegistration(AnnotationPluginPackage, {
+        autoCommit: true,
+        selectAfterCreate: false,
+      }),
       createPluginRegistration(SelectionPluginPackage, {
         marquee: { enabled: false },
       }),
@@ -2638,6 +2692,7 @@ export const PDFViewer = React.forwardRef<PDFViewerHandle, PDFViewerProps>(
           defaultZoom={defaultZoom}
           errorMessage="Unable to load the PDF engine."
           showDownload={showDownload}
+          showSearchControls={showSearchControls}
           showRotateControls={showRotateControls}
           showToolbar={showToolbar}
           showUpload={showUpload}
@@ -2657,6 +2712,7 @@ export const PDFViewer = React.forwardRef<PDFViewerHandle, PDFViewerProps>(
           className={className}
           defaultZoom={defaultZoom}
           showDownload={showDownload}
+          showSearchControls={showSearchControls}
           showRotateControls={showRotateControls}
           showToolbar={showToolbar}
           showUpload={showUpload}
@@ -2682,6 +2738,7 @@ export const PDFViewer = React.forwardRef<PDFViewerHandle, PDFViewerProps>(
             className={className}
             fileName={fileName}
             showDownload={showDownload}
+            showSearchControls={showSearchControls}
             showToolbar={showToolbar}
             showRotateControls={showRotateControls}
             showUpload={showUpload}

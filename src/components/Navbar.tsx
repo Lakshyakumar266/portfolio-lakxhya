@@ -16,7 +16,7 @@ import {
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
-  { label: 'Proof of Work', href: '/proof-of-work' },
+  { label: 'Proof of Work', href: '/work' },
   { label: 'Blog', href: '/blog' },
 ];
 
@@ -27,8 +27,8 @@ const MORE_DROPDOWN_ITEMS = [
     icon: FileText,
   },
   {
-    label: 'Experimentals',
-    href: '/experimentals',
+    label: 'Experimental',
+    href: '/experimental',
     icon: FlaskConical,
   },
 ];
