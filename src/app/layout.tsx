@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/hooks/theme-provider';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/footer';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -47,8 +48,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SmoothScroll />
+
           <Navbar />
           {children}
+          {/* FOOTER */}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
