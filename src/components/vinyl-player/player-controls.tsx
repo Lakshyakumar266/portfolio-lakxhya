@@ -127,6 +127,9 @@ export function PlayerControls({
     onSeek(Number(e.target.value));
   };
 
+  const progressPercent =
+    duration > 0 ? (Math.min(currentTime, duration) / duration) * 100 - 0.1 : 0;
+
   // ----- Render ---------------------------------------------------------
   return (
     <div
@@ -166,7 +169,10 @@ export function PlayerControls({
           value={Math.min(currentTime, duration || 0)}
           onChange={handleSeekChange}
           aria-label="Seek"
-          className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-neutral-200 dark:bg-neutral-800 accent-neutral-900 dark:accent-neutral-100 transition-all"
+          className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 accent-neutral-900 dark:accent-neutral-100"
+          style={{
+            backgroundImage: `linear-gradient(to right, currentColor 0%, currentColor ${progressPercent}%, transparent ${progressPercent}%, transparent 100%)`,
+          }}
         />
         <div className="mt-1 flex justify-between text-[11px] tabular-nums text-muted-foreground font-mono">
           <span>{formatTime(currentTime)}</span>
