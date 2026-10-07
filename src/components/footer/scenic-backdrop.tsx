@@ -96,7 +96,7 @@ export function ScenicBackdrop({ className }: { className?: string }) {
         </div>
 
         {/* Soft bottom vignette */}
-        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 inset-x-0 h-16 bg-linear-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
       </motion.div>
     </div>
   );
